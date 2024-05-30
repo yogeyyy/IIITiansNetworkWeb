@@ -13,12 +13,10 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import UserInformation from "./UserInformation";
 
-export default function Header() {
+export default function Navbar() {
   return (
     <div className="flex flex-col items-center">
-      <div className="w-2/3 flex flex-col items-center py-10 gap-4">
         <UserInformation />
-      </div>
 
       {/* <div className="flex-1">
         <form className="flex items-center space-x-1 bg-[#7D6F64] bg-opacity-20 p-2 rounded-xl flex-1 mx-2 max-w-80">

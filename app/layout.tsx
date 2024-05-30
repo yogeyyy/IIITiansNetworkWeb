@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,9 +21,9 @@ export default function RootLayout({
       <html lang="en">
         <body className="flex min-h-screen w-full justify-center">
           <div className="flex justify-center w-3/4">
-            <header className="w-1/4 sticky left-0">
-              <Header />
-            </header>
+            <nav className="w-1/4 sticky left-0">
+              <Navbar />
+            </nav>
 
             <main className="w-1/2 bg-red-100">{children}</main>
 
