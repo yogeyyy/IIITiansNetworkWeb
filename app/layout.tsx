@@ -25,9 +25,9 @@ export default function RootLayout({
               <Navbar />
             </nav>
 
-            <main className="w-1/2 bg-red-100">{children}</main>
+            <main className="w-1/2">{children}</main>
 
-            <div className="w-1/4 bg-purple-100"></div>
+            <div className="w-1/4"></div>
           </div>
         </body>
       </html>
