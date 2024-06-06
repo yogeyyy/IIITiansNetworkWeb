@@ -1,6 +1,6 @@
 import { IUser } from "@/types/user";
 import mongoose, { Schema, Document, models, Model } from "mongoose";
-import { IComment, ICommentBase } from "./comment";
+import { Comment, IComment, ICommentBase } from "./comment";
 
 export interface IPostBase {
   user: IUser;
@@ -49,4 +49,73 @@ const PostSchema = new Schema<IPostDocument>(
   }
 );
 
+PostSchema.methods.likePost = async function (userId: string) {
+  try {
+    await this.updateOne({ $addToSet: { likes: userId } });
+  } catch (error) {
+    console.log("Error Liking post", error);
+  }
+};
 
+PostSchema.methods.unlikePost = async function (userId: string) {
+  try {
+    await this.updateOne({ $pull: { likes: userId } });
+  } catch (error) {
+    console.log("Error Unliking post", error);
+  }
+};
+
+PostSchema.methods.removePost = async function () {
+  try {
+    await this.model("Post").deleteOne({ _id: this._id });
+  } catch (error) {
+    console.log("Error Removing post", error);
+  }
+};
+
+PostSchema.methods.commentOnPost = async function (comment: ICommentBase) {
+  try {
+    const newcomment = await Comment.create(comment);
+    this.comments.push(newcomment._id);
+    await this.save();
+  } catch (error) {
+    console.log("Error Commenting on post", error);
+  }
+};
+
+PostSchema.methods.getAllComments = async function () {
+  try {
+    await this.populate({
+      path: "comments",
+      options: { sort: { createdAt: -1 } }, // sort by newest first
+    });
+    return this.comments;
+  } catch (error) {
+    console.log("Error getting comments: ", error);
+  }
+};
+
+PostSchema.methods.getAllPosts = async function () {
+  try {
+    const posts = await this.find()
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "comments",
+        options: { sort: { createdAt: -1 } },
+      })
+      .lean();
+
+    return posts.map((post: IPostDocument) => ({
+      ...post,
+      _id: post._id as string, // Add type annotation
+      comments: post.comments?.map((comment: IComment) => ({
+        ...comment,
+        _id: comment._id as string, // Add type annotation
+      })),
+    }));
+  } catch (error) {}
+};
+
+export const Post =
+  (models.Post as IPostModel) ||
+  mongoose.model<IPostDocument, IPostModel>("Post", PostSchema);
