@@ -1,26 +1,28 @@
 "use server";
 
 import { AddPostRequestBody } from "@/app/api/posts/route";
+import connectDB from "@/mongodb/db";
 import { Post } from "@/mongodb/models/post";
 import { IUser } from "@/types/user";
 import { currentUser } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
-export default async function createPostAction(formData: FormData) {
+interface PostData {
+    postContent: string;
+    postImage: string | null;
+}
+
+export default async function createPostAction(data: PostData) {
 
     // auth().protect(); protects the route from unauthorized access
-    // 
+    
+    await connectDB(); 
     const user = await currentUser();
     if(!user) { //check user present
         throw new Error("User not authenticated");
     }
 
-    // store form data in variables
-    const postInput = formData.get("postInput") as string;
-    const postImage = formData.get("postImage") as File;
-
-    let postImageUrl: string | undefined; //changeable 
-
-    if(!postInput) { // check if post input is empty
+    if(!data) { // check if post input is empty
         throw new Error("Post content is required");
     }
 
@@ -32,28 +34,33 @@ export default async function createPostAction(formData: FormData) {
         lastName: user.lastName || "",
     }
 
-    // upload image if present
-    if(postImage.size > 0) {
-        // create post w/ image
-        // const body: AddPostRequestBody = {
-        //     user: userDB,
-        //     text: postInput,
-        //     imageUrl: image_url,
-        // }
+    // upload image if present and create post
+    try {
 
-        // await Post.create(body);
-
-    } else {
-        // create post w/o image
-        const body: AddPostRequestBody = {
-            user: userDB,
-            text: postInput,
-        };
-
-        await Post.create(body);
+        if(data.postImage) {
+            const body: AddPostRequestBody = {
+                user: userDB,
+                text: data.postContent,
+                imageUrl: data.postImage,
+            }
+    
+            await Post.create(body);
+    
+        } else {
+            // create post w/o image
+            const body: AddPostRequestBody = {
+                user: userDB,
+                text: data.postContent,
+            };
+    
+            await Post.create(body);
+        }
+        
+    } catch (error) {
+        throw new Error(`Error creating post: ${error}`);
     }
-
-    // create post in database
+    
 
     // revalidatePath("/");
+    revalidatePath("/"); 
 }

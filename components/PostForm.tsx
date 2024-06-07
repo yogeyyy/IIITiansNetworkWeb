@@ -1,9 +1,13 @@
 "use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { ImageIcon, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
+import { ImagetoBase64 } from "@/lib/utils";
+import createPostAction from "@/actions/createPostAction";
+import { Console } from "console";
 
 export default function PostForm() {
   //fetching the logged in user information
@@ -17,10 +21,17 @@ export default function PostForm() {
   const [preview, setPreview] = useState<string | null>(null);
 
   //handle image change
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!event.target.files?.length) {
+      return;
+    }
+
+    const file = await ImagetoBase64(event.target.files[0] as File);
+
     if (file) {
-      setPreview(URL.createObjectURL(file));
+      setPreview(file as string);
     }
   };
 
@@ -30,30 +41,38 @@ export default function PostForm() {
     ref.current?.reset();
 
     const postContent = formDataCopy.get("postInput") as string;
+    const postImage = preview as string;
 
-    if(!postContent.trim()) {
-        throw new Error("Post content is required");
+    if (!postContent.trim()) {
+      throw new Error("Post content is required");
     }
+
+    const data = {
+      postContent: postContent,
+      postImage: postImage,
+    };
 
     setPreview(null);
 
     try {
-        // await createPostAction(formDataCopy);
-
+      
+      await createPostAction(data);
     } catch (error) {
-        console.log("Error Creating post:", error);
+      console.log("Error Creating post:", error);
     }
   };
 
   return (
     <div className="w-full mb-2 rounded-xl">
-      <form  ref={ref} action={
-        (formData) => {
-            //Handle form submission
-            handlePostAction(formData);
-            //Toast
-        }
-      } className="w-full px-4 py-4 rounded-[1rem] backdrop-filter backdrop-blur-xl bg-[#B89C87] bg-opacity-15">
+      <form
+        ref={ref}
+        action={(formData) => {
+          //Handle form submission
+          handlePostAction(formData);
+          //Toast
+        }}
+        className="w-full px-4 py-4 rounded-[1rem] backdrop-filter backdrop-blur-xl bg-[#B89C87] bg-opacity-15"
+      >
         <div className="flex items-center space-x-2">
           <Avatar>
             <AvatarImage src={user?.imageUrl} />
@@ -81,27 +100,33 @@ export default function PostForm() {
           <button type="submit" hidden>
             Post
           </button>
-          </div>
+        </div>
 
-          {/* Preview Conditional check */}
+        {/* Preview Conditional check */}
+        {preview && (
+          <div className="relative mt-3">
+            <img src={preview} alt="preview" className="w-full object-cover" />
+          </div>
+        )}
+
+        <div className="flex justify-end mt-2 gap-2">
+          <Button type="button" onClick={() => fileInputRef.current?.click()}>
+            <ImageIcon className="mr-2" size={16} color="currentColor" />{" "}
+            {preview ? "Change" : "Add"} Image
+          </Button>
+
+          {/* Add remove preview button */}
           {preview && (
-            <div className="relative mt-3">
-                <img src={preview} alt="preview" className="w-full object-cover" />
-            </div>
-          )}
-
-          <div className="flex justify-end mt-2 gap-2">
-            <Button type="button" onClick={() => fileInputRef.current?.click()}>
-              <ImageIcon className="mr-2" size={16} color="currentColor" /> {preview ? "Change" : "Add"} Image
+            <Button
+              variant={"outline"}
+              type="button"
+              onClick={() => setPreview(null)}
+            >
+              <XIcon className="mr-2" size={16} color="currentColor" /> Remove
+              Image
             </Button>
-
-            {/* Add remove preview button */}
-            {preview && (
-                <Button variant={"outline"} type="button" onClick={() => setPreview(null)}>
-                    <XIcon className="mr-2" size={16} color="currentColor" /> Remove Image
-                </Button>
-            )}
-          </div>
+          )}
+        </div>
       </form>
     </div>
   );

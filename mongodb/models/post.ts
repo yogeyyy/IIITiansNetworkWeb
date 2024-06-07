@@ -5,7 +5,7 @@ import { Comment, IComment, ICommentBase } from "./comment";
 export interface IPostBase {
   user: IUser;
   text: string;
-  image?: string;
+  imageUrl?: string;
   comments?: IComment[];
   likes?: string[];
 }
@@ -40,7 +40,7 @@ const PostSchema = new Schema<IPostDocument>(
       lastName: { type: String },
     },
     text: { type: String, required: true },
-    image: { type: String },
+    imageUrl: { type: String },
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment", default: [] }],
     likes: { type: [String] },
   },

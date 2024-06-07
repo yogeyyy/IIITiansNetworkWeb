@@ -1,7 +1,6 @@
 import connectDB from "@/mongodb/db";
 import { Post } from "@/mongodb/models/post";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { connect } from "http2";
 import { NextResponse } from "next/server";
 
 export async function GET(
