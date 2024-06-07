@@ -63,7 +63,7 @@ export default function PostForm() {
   };
 
   return (
-    <div className="w-full mb-2 rounded-xl">
+    <div className="w-full rounded-xl">
       <form
         ref={ref}
         action={(formData) => {
@@ -71,7 +71,7 @@ export default function PostForm() {
           handlePostAction(formData);
           //Toast
         }}
-        className="w-full px-4 py-4 rounded-[1rem] backdrop-filter backdrop-blur-xl bg-[#B89C87] bg-opacity-15"
+        className="w-full p-6 rounded-[1.5rem] backdrop-filter backdrop-blur-xl bg-[#B89C87] bg-opacity-15"
       >
         <div className="flex items-center space-x-2">
           <Avatar>

@@ -95,7 +95,7 @@ PostSchema.methods.getAllComments = async function () {
   }
 };
 
-PostSchema.methods.getAllPosts = async function () {
+PostSchema.statics.getAllPosts = async function () {
   try {
     const posts = await this.find()
       .sort({ createdAt: -1 })
@@ -113,7 +113,9 @@ PostSchema.methods.getAllPosts = async function () {
         _id: comment._id as string, // Add type annotation
       })),
     }));
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error getting all posts: ", error);
+  }
 };
 
 export const Post =
