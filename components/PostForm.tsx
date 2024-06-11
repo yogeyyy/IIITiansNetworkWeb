@@ -55,7 +55,6 @@ export default function PostForm() {
     setPreview(null);
 
     try {
-      
       await createPostAction(data);
     } catch (error) {
       console.log("Error Creating post:", error);

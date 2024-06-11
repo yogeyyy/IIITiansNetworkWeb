@@ -93,7 +93,7 @@ PostSchema.methods.getAllComments = async function () {
   } catch (error) {
     console.log("Error getting comments: ", error);
   }
-};
+};  
 
 PostSchema.statics.getAllPosts = async function () {
   try {
@@ -121,3 +121,5 @@ PostSchema.statics.getAllPosts = async function () {
 export const Post =
   (models.Post as IPostModel) ||
   mongoose.model<IPostDocument, IPostModel>("Post", PostSchema);
+
+
