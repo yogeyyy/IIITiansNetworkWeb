@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,8 @@ export default function RootLayout({
       <html lang="en">
         <body className="flex min-h-screen w-full justify-center">
           <div className="flex justify-center w-3/4">
+            <Toaster position="bottom-left" />
+
             <nav className="w-1/4 sticky left-0">
               <Navbar />
             </nav>

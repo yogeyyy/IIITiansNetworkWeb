@@ -8,15 +8,20 @@ import { HeartIcon, MessageCircleIcon, TrashIcon } from "lucide-react";
 import { Badge } from "./ui/badge";
 import ReactTimeago from "react-timeago";
 import { Button } from "./ui/button";
+import deletePostAction from "@/actions/deletePostAction";
+import PostActions from "./PostActions";
+import { toast } from "sonner";
 
 export default function Post({ post }: { post: IPostDocument }) {
   const user = useUser();
 
   const isAuthor = user.user?.id === post.user.userId;
+
   return (
-    <div className="w-full p-6 rounded-[1.5rem] bg-slate-800 bg-opacity-15 backdrop-filter backdrop-blur-x">
+    <div className="w-full postBg rounded-[1.5rem]">
+      <div className="rounded-[1.5rem] backdrop-filter backdrop-blur-3xl flex flex-col space-y-4">
       {/* post author */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-6 pt-6">
         <div className="flex items-start space-x-4">
           <Avatar>
             <AvatarImage src={post.user.userImage} />
@@ -37,15 +42,32 @@ export default function Post({ post }: { post: IPostDocument }) {
             </p>
           </div>
         </div>
-        <div>{isAuthor && <Button variant={"outline"}><TrashIcon/></Button>}</div>
+        <div>
+          {isAuthor && (
+            <Button
+              variant={"outline"}
+              onClick={() => {
+                const promise = deletePostAction(post._id as string);
+
+                toast.promise(promise, {
+                  loading: "Deleting post...",
+                  success: "Post deleted!",
+                  error: "Failed to delete post",
+                });
+              }}
+            >
+              <TrashIcon />
+            </Button>
+          )}
+        </div>
       </div>
       {/* post content */}
-      <div className="py-4">
+      <div className="px-6">
         <p className="text-base">{post.text}</p>
       </div>
       {/* post image */}
       {post.imageUrl && (
-        <div className="w-full">
+        <div className="w-full px-6">
           <img
             src={post.imageUrl}
             alt={`Post by ${post.user.firstName}`}
@@ -55,15 +77,7 @@ export default function Post({ post }: { post: IPostDocument }) {
       )}
 
       {/* Post actions */}
-      <div className="w-full pt-4 flex gap-4">
-        <div className="flex gap-2 items-center">
-          <HeartIcon size={20} />
-          <p>12.8k</p>
-        </div>
-        <div className="flex gap-2 items-center">
-          <MessageCircleIcon size={20} />
-          <p>Comment</p>
-        </div>
+      <PostActions post={post}/>
       </div>
     </div>
   );

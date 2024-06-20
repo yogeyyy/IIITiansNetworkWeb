@@ -7,7 +7,8 @@ import { ImageIcon, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { ImagetoBase64 } from "@/lib/utils";
 import createPostAction from "@/actions/createPostAction";
-import { Console } from "console";
+import { Console, error } from "console";
+import { toast } from "sonner";
 
 export default function PostForm() {
   //fetching the logged in user information
@@ -67,8 +68,13 @@ export default function PostForm() {
         ref={ref}
         action={(formData) => {
           //Handle form submission
-          handlePostAction(formData);
+          const promise = handlePostAction(formData);
           //Toast
+          toast.promise(promise, {
+            loading: "Posting...",
+            success: "Posted!",
+            error: "Failed to post",
+          })
         }}
         className="w-full p-6 rounded-[1.5rem] backdrop-filter backdrop-blur-xl bg-[#B89C87] bg-opacity-15"
       >
