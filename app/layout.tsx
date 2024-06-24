@@ -28,7 +28,7 @@ export default function RootLayout({
               <Navbar />
             </div>
 
-            <main className="w-1/2 overflow-y-auto">{children}</main>
+            <main className="w-1/2">{children}</main>
 
             <div className="w-1/4"></div>
           </div>
