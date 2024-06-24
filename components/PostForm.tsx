@@ -15,11 +15,12 @@ export default function PostForm() {
   const { user } = useUser();
 
   //reference to the input fields
-  const ref = useRef<HTMLFormElement>(null);
+  const ref = useRef<HTMLFormElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   //states
   const [preview, setPreview] = useState<string | null>(null);
+  const [addImage, setAddImage] = useState<boolean>(false);
 
   //handle image change
   const handleImageChange = async (
@@ -66,33 +67,34 @@ export default function PostForm() {
     <div className="w-full rounded-xl">
       <form
         ref={ref}
-        action={(formData) => {
+        onSubmit={(event) => {
+          event.preventDefault();
           //Handle form submission
+          const formData = new FormData(ref.current as HTMLFormElement);
           const promise = handlePostAction(formData);
           //Toast
           toast.promise(promise, {
             loading: "Posting...",
             success: "Posted!",
             error: "Failed to post",
-          })
+          });
         }}
-        className="w-full p-6 rounded-[1.5rem] backdrop-filter backdrop-blur-xl bg-[#B89C87] bg-opacity-15"
+        className="w-full p-6 rounded-[1.5rem] backdrop-filter backdrop-blur-xl formBg bg-opacity-15"
       >
-        <div className="flex items-center space-x-2">
-          <Avatar>
-            <AvatarImage src={user?.imageUrl} />
-            <AvatarFallback>
-              {user?.firstName?.charAt(0)}
-              {user?.lastName?.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
+        <div className="flex items-center space-x-2 justify-between">
+          <div className="flex gap-3 items-center">
+            <Avatar>
+              <AvatarImage src={user?.imageUrl} />
+              <AvatarFallback>
+                {user?.firstName?.charAt(0)}
+                {user?.lastName?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
 
-          <input
-            type="text"
-            name="postInput"
-            placeholder="Share an update"
-            className="flex-1 rounded-full outline-none px-5 py-2"
-          />
+            <p className="text-sm font-bold text-white">
+              {user?.firstName} {user?.lastName}
+            </p>
+          </div>
 
           <input
             ref={fileInputRef}
@@ -102,20 +104,45 @@ export default function PostForm() {
             onChange={handleImageChange}
             hidden
           />
-          <button type="submit" hidden>
-            Post
-          </button>
+          <Button
+            type="submit"
+            className="rounded-full px-6 bg-[#47372F] bg-opacity-30 hover:bg-[#47372F] hover:bg-opacity-50 focus:bg-[#47372F] focus:bg-opacity-50 transition-colors duration-500 ease-in-out hover:shadow-md shadow-[#7E6F64]"
+          >
+            <p className="font-semibold">Post</p>
+          </Button>
+        </div>
+
+        <div className="w-full flex-1 mt-4">
+          <input
+            type="text"
+            name="postInput"
+            placeholder="Share an update"
+            className="w-full flex-1 rounded-full outline-none px-5 py-2 placeholder-white placeholder-opacity-70 text-white bg-[white] bg-opacity-10 focus:bg-opacity-20 transition-colors duration-500 ease-in-out shadow-md shadow-[#7E6F64]"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+          e.preventDefault();
+          // Optionally, you can also blur the input field to remove focus
+          // e.currentTarget.blur();
+              }
+            }}
+            autoComplete="off"
+          />
         </div>
 
         {/* Preview Conditional check */}
         {preview && (
-          <div className="relative mt-3">
-            <img src={preview} alt="preview" className="w-full object-cover" />
+          <div className="relative mt-4">
+            <img src={preview} alt="preview" className="w-full object-cover rounded-[1.5rem]" />
           </div>
         )}
 
-        <div className="flex justify-end mt-2 gap-2">
-          <Button type="button" onClick={() => fileInputRef.current?.click()}>
+        <div className="flex justify-end mt-4 gap-2">
+          <Button
+            type="button"
+            variant={"ghost"}
+            onClick={() => fileInputRef.current?.click()}
+            className={`text-white rounded-full hover:bg-white hover:bg-opacity-20 hover:text-white hover:shadow-md shadow-[#7E6F64] transition-colors duration-500 ease-in-out`}
+          >
             <ImageIcon className="mr-2" size={16} color="currentColor" />{" "}
             {preview ? "Change" : "Add"} Image
           </Button>
@@ -123,9 +150,10 @@ export default function PostForm() {
           {/* Add remove preview button */}
           {preview && (
             <Button
-              variant={"outline"}
+              variant={"ghost"}
               type="button"
               onClick={() => setPreview(null)}
+              className={`text-white rounded-full bg-transparent hover:bg-white hover:bg-opacity-20 hover:text-white hover:shadow-md shadow-[#7E6F64] transition duration-500 ease-in-out`}
             >
               <XIcon className="mr-2" size={16} color="currentColor" /> Remove
               Image

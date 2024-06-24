@@ -18,7 +18,7 @@ export default function Post({ post }: { post: IPostDocument }) {
   const isAuthor = user.user?.id === post.user.userId;
 
   return (
-    <div className="w-full postBg rounded-[1.5rem]">
+    <div className="w-full bg-[#B89C87] bg-opacity-20 rounded-[1.5rem]">
       <div className="rounded-[1.5rem] backdrop-filter backdrop-blur-3xl flex flex-col space-y-4">
       {/* post author */}
       <div className="flex items-center justify-between px-6 pt-6">
