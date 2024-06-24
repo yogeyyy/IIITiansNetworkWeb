@@ -24,11 +24,11 @@ export default function RootLayout({
           <div className="flex justify-center w-3/4">
             <Toaster position="bottom-left" />
 
-            <nav className="w-1/4 sticky left-0">
+            <div className="w-1/4">
               <Navbar />
-            </nav>
+            </div>
 
-            <main className="w-1/2">{children}</main>
+            <main className="w-1/2 overflow-y-auto">{children}</main>
 
             <div className="w-1/4"></div>
           </div>

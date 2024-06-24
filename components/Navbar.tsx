@@ -15,7 +15,7 @@ import UserInformation from "./UserInformation";
 
 export default function Navbar() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center sticky top-0">
         <UserInformation />
 
       {/* <div className="flex-1">
