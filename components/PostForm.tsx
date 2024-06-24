@@ -82,19 +82,13 @@ export default function PostForm() {
         className="w-full p-6 rounded-[1.5rem] backdrop-filter backdrop-blur-xl formBg bg-opacity-15"
       >
         <div className="flex items-center space-x-2 justify-between">
-          <div className="flex gap-3 items-center">
-            <Avatar>
-              <AvatarImage src={user?.imageUrl} />
-              <AvatarFallback>
-                {user?.firstName?.charAt(0)}
-                {user?.lastName?.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-
-            <p className="text-sm font-bold text-white">
-              {user?.firstName} {user?.lastName}
-            </p>
-          </div>
+          <Avatar>
+            <AvatarImage src={user?.imageUrl} />
+            <AvatarFallback>
+              {user?.firstName?.charAt(0)}
+              {user?.lastName?.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
 
           <input
             ref={fileInputRef}
@@ -104,15 +98,7 @@ export default function PostForm() {
             onChange={handleImageChange}
             hidden
           />
-          <Button
-            type="submit"
-            className="rounded-full px-6 bg-[#47372F] bg-opacity-30 hover:bg-[#47372F] hover:bg-opacity-50 focus:bg-[#47372F] focus:bg-opacity-50 transition-colors duration-500 ease-in-out hover:shadow-md shadow-[#7E6F64]"
-          >
-            <p className="font-semibold">Post</p>
-          </Button>
-        </div>
 
-        <div className="w-full flex-1 mt-4">
           <input
             type="text"
             name="postInput"
@@ -120,9 +106,9 @@ export default function PostForm() {
             className="w-full flex-1 rounded-full outline-none px-5 py-2 placeholder-white placeholder-opacity-70 text-white bg-[white] bg-opacity-10 focus:bg-opacity-20 transition-colors duration-500 ease-in-out shadow-md shadow-[#7E6F64]"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-          e.preventDefault();
-          // Optionally, you can also blur the input field to remove focus
-          // e.currentTarget.blur();
+                e.preventDefault();
+                // Optionally, you can also blur the input field to remove focus
+                // e.currentTarget.blur();
               }
             }}
             autoComplete="off"
@@ -132,33 +118,48 @@ export default function PostForm() {
         {/* Preview Conditional check */}
         {preview && (
           <div className="relative mt-4">
-            <img src={preview} alt="preview" className="w-full object-cover rounded-[1.5rem]" />
+            <img
+              src={preview}
+              alt="preview"
+              className="w-full object-cover rounded-[1.5rem]"
+            />
           </div>
         )}
 
-        <div className="flex justify-end mt-4 gap-2">
-          <Button
-            type="button"
-            variant={"ghost"}
-            onClick={() => fileInputRef.current?.click()}
-            className={`text-white rounded-full hover:bg-white hover:bg-opacity-20 hover:text-white hover:shadow-md shadow-[#7E6F64] transition-colors duration-500 ease-in-out`}
-          >
-            <ImageIcon className="mr-2" size={16} color="currentColor" />{" "}
-            {preview ? "Change" : "Add"} Image
-          </Button>
-
-          {/* Add remove preview button */}
-          {preview && (
+        <div className="flex justify-between mt-4 gap-2">
+          <div className="flex gap-2">
             <Button
-              variant={"ghost"}
               type="button"
-              onClick={() => setPreview(null)}
-              className={`text-white rounded-full bg-transparent hover:bg-white hover:bg-opacity-20 hover:text-white hover:shadow-md shadow-[#7E6F64] transition duration-500 ease-in-out`}
+              variant={"ghost"}
+              onClick={() => fileInputRef.current?.click()}
+              className={`text-white rounded-full hover:bg-white hover:bg-opacity-20 hover:text-white hover:shadow-md shadow-[#7E6F64] transition-colors duration-500 ease-in-out`}
             >
-              <XIcon className="mr-2" size={16} color="currentColor" /> Remove
-              Image
+              <ImageIcon className="mr-2" size={16} color="currentColor" />{" "}
+              {preview ? "Change" : "Add"} Image
             </Button>
-          )}
+
+            {/* Add remove preview button */}
+            {preview && (
+              <Button
+                variant={"ghost"}
+                type="button"
+                onClick={() => setPreview(null)}
+                className={`text-white rounded-full bg-transparent hover:bg-white hover:bg-opacity-20 hover:text-white hover:shadow-md shadow-[#7E6F64] transition duration-500 ease-in-out`}
+              >
+                <XIcon className="mr-2" size={16} color="currentColor" /> Remove
+                Image
+              </Button>
+            )}
+          </div>
+
+          <div>
+            <Button
+              type="submit"
+              className="rounded-full px-6 bg-[#47372F] bg-opacity-30 hover:bg-[#47372F] hover:bg-opacity-50 focus:bg-[#47372F] focus:bg-opacity-50 transition-colors duration-500 ease-in-out hover:shadow-md shadow-[#7E6F64]"
+            >
+              <p className="font-semibold">Post</p>
+            </Button>
+          </div>
         </div>
       </form>
     </div>
