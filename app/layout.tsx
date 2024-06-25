@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import FollowerSuggestion from "@/components/FollowerSuggestion";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,9 @@ export default function RootLayout({
 
             <main className="w-1/2">{children}</main>
 
-            <div className="w-1/4"></div>
+            <div className="w-1/4">
+              <FollowerSuggestion />
+            </div>
           </div>
         </body>
       </html>
