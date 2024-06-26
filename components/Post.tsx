@@ -33,19 +33,21 @@ export default function Post({ post }: { post: IPostDocument }) {
           <div>
             <h2 className="text-sm font-bold">
               {post.user.firstName} {post.user.lastName}
-              <Badge color="blue" className="ml-2">
+              {isAuthor && <Badge className="ml-2 bg-[#33241C] hover:bg-[#33241C]">
                 Author
-              </Badge>
+              </Badge>}
             </h2>
             <p className="text-sm">
               <ReactTimeago date={new Date(post.createdAt)} />
             </p>
           </div>
         </div>
-        <div>
+        <div className="flex items-start">
           {isAuthor && (
             <Button
-              variant={"outline"}
+              variant={"ghost"}
+              size={"icon"}
+              className="hover:bg-transparent"
               onClick={() => {
                 const promise = deletePostAction(post._id as string);
 

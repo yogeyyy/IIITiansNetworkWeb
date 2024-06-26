@@ -77,22 +77,22 @@ export default function PostActions({ post }: { post: IPostDocument }) {
         <div className="flex gap-2 items-center">
           <HeartIcon
             size={20}
-            className={cn(liked && "text-blue-600 fill-blue-600")}
+            className={cn(liked && "text-[#B89C87] fill-[#B89C87]")}
             onClick={likeOrUnlikePost}
           />
-          {likes && likes.length > 0 && <p>{likes.length}</p>}
+          {likes && likes.length > 0 && <p className="text-sm">{likes.length}</p>}
         </div>
         <div className="flex gap-2 items-center">
           <MessageCircleIcon
             size={20}
-            className={cn(isCommentsOpen && "text-yellow-600 fill-yellow-600")}
+            className={cn(isCommentsOpen && "text-[#47372F] fill-[#47372F]")}
             onClick={() => setIsCommentsOpen(!isCommentsOpen)}
           />
         </div>
       </div>
 
       {isCommentsOpen && (
-        <div className="bg-slate-500">
+        <div className="">
           <SignedIn>
             <CommentForm postId={post._id as string}/>
           </SignedIn>

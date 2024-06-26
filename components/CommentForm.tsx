@@ -33,7 +33,7 @@ export default function CommentForm({ postId }: { postId: string }) {
   };
 
   return (
-    <div>
+    <div className="pt-4 items-center">
       <form
         ref={ref}
         action={(formData) => {
@@ -44,7 +44,7 @@ export default function CommentForm({ postId }: { postId: string }) {
             error: "Error creating comment",
           });
         }}
-        className="flex items-center space-x-2"
+        className="flex items-center space-x-3"
       >
         <Avatar>
           <AvatarImage src={user?.imageUrl} />
