@@ -10,7 +10,7 @@ export default function PostFeed({ posts }: { posts: IPostDocument[] }) {
         <h1 className="text-2xl font-black tracking-tight text-black">Your Feed</h1>
 
         <div className="flex gap-4 text-sm text-[#47372F]">
-          <p className="font-bold" >Popular</p>
+          <p className="font-bold">Popular</p>
           <p className="">Following</p>
         </div>
       </div>
