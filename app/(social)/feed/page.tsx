@@ -6,7 +6,7 @@ import { SignedIn } from "@clerk/nextjs";
 
 export const revalidate = 0;
 
-export default async function Home() {
+export default async function Feed() {
   await connectDB();
   const posts = await Post.getAllPosts();
 
