@@ -6,7 +6,7 @@ import { Button } from "./ui/button"
 const TopNavbar = () => {
     return (
         <nav className="flex justify-center w-full h-24">
-            <div className="flex items-center justify-between w-3/4 py-6">
+            <div className="flex items-center justify-between w-4/5 px-12 py-8">
                 {/* left brand */}
                 <div className="flex justify-start items-center gap-2 w-1/3">
                     <Image src="/brand.png" alt="logo" width={40} height={40} className="rounded-full" />
