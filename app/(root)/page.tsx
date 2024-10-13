@@ -1,8 +1,10 @@
+import TopNavbar from "@/components/TopNavbar";
+
 const Home = async () => {
 
   return (
-    <section className="home">
-        <h1>Home</h1>
+    <section className="flex w-full justify-center">
+        <TopNavbar />
     </section>
   );
 };

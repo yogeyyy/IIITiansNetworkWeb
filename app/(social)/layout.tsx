@@ -19,7 +19,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
       <html lang="en">
         <body className="flex min-h-screen w-full justify-center">
           <div className="flex justify-center w-3/4">
@@ -37,6 +36,5 @@ export default function RootLayout({
           </div>
         </body>
       </html>
-    </ClerkProvider>
   );
 }
