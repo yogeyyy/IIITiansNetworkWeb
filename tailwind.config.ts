@@ -54,6 +54,8 @@ const config = {
         },
         olivegreen: "#2D3C1F",
         mossgreen: "#727C57",
+        creamy: "#CEBA9F",
+        cocoa: "#66523A",
       },
       borderRadius: {
         lg: "var(--radius)",
