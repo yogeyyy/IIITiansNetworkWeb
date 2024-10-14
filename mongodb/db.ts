@@ -2,9 +2,6 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
-dotenv.config();
-
 const connectDB = async () => {
     if (mongoose.connection?.readyState >= 1) {
         console.log("Already connected to database");
