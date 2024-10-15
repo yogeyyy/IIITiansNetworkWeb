@@ -29,6 +29,7 @@ interface PositionMethods {
 
 interface PositionStatics {
     getAllPositions(): Promise<PositionDocument[]>;
+    getPositionById(id: string): Promise<PositionDocument | null>;
 }
 
 export interface PositionDocument extends PositionData, PositionProps, PositionMethods {} // single instance of a postion
@@ -47,6 +48,16 @@ const PositionSchema = new Schema<PositionDocument>(
         timestamps: true,
     }
 );
+
+PositionSchema.statics.getPositionById = async function (id: string) {
+    try {
+        const position = await this.findById(id).lean().exec();
+        return position;
+    } catch (error) {
+        console.error("Error getting position by id", error);
+        throw new Error("Error getting position by id");
+    }
+};
 
 
 PositionSchema.statics.getAllPositions = async function () {

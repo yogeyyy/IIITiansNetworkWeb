@@ -16,7 +16,7 @@ const TopNavbar = () => {
                 {/* nav links */}
                 <div className="flex justify-center gap-10 w-1/3">
                     <Link href={"/"}><p className="font-bold text-[#110C09] text-md">About Us</p></Link>
-                    <Link href={"/recruit"}><p className="font-bold text-[#110C09] text-md">Recruitments</p></Link>
+                    <Link href={"/positions"}><p className="font-bold text-[#110C09] text-md">Recruitments</p></Link>
                     <Link href={"/"}><p className="font-bold text-[#110C09] text-md">Explore</p></Link>
                 </div>
 
