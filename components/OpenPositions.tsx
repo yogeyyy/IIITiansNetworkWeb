@@ -18,7 +18,7 @@ const OpenPositions = async () => {
         <p>Filters</p>
 
         {/* Positions card builder */}
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 gap-8">
           {positions.map((position: PositionProps) => (
             <PositionCard key={position.positionId} position={position} />
           ))}
