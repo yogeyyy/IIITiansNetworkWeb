@@ -3,7 +3,6 @@
 import { IPostDocument } from "@/mongodb/models/post";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import Image from "next/image";
 import { HeartIcon, MessageCircleIcon, TrashIcon } from "lucide-react";
 import { Badge } from "./ui/badge";
 import ReactTimeago from "react-timeago";

@@ -13,6 +13,10 @@ export interface PositionData extends PositionBase, Document {
     updatedAt: Date;
 }
 
+export interface PositionProps extends PositionBase, Document {
+    positionId: string;
+}
+
 // define document methods (for instance methods)
 interface PositionMethods {
     // likePost(userId: string): Promise<void>;
@@ -27,7 +31,7 @@ interface PositionStatics {
     getAllPositions(): Promise<PositionDocument[]>;
 }
 
-export interface PositionDocument extends PositionData, PositionMethods {} // single instance of a postion
+export interface PositionDocument extends PositionData, PositionProps, PositionMethods {} // single instance of a postion
 interface PositionModel extends PositionStatics, Model<PositionDocument> {} // allpositions
 
 
@@ -43,5 +47,26 @@ const PositionSchema = new Schema<PositionDocument>(
         timestamps: true,
     }
 );
+
+
+PositionSchema.statics.getAllPositions = async function () {
+    try {
+        const positions = await this.find().sort({ createdAt: -1 }).populate().lean();
+
+        console.log("Positions", positions);
+
+        return positions.map((position: any) => ({
+            positionId: position._id.toString(),
+            positionTitle: position.positionTitle,
+            positionDescription: position.positionDescription,
+            positionRequirements: position.positionRequirements,
+            positionSkills: position.positionSkills,
+            positionLocation: position.positionLocation,
+        }));
+
+    } catch (error) {
+        console.error("Error getting all positions", error);
+    }
+};
 
 export const Position = (models.Position as PositionModel) || mongoose.model<PositionDocument, PositionModel>("Position", PositionSchema);
