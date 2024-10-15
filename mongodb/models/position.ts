@@ -53,8 +53,6 @@ PositionSchema.statics.getAllPositions = async function () {
     try {
         const positions = await this.find().sort({ createdAt: -1 }).populate().lean();
 
-        console.log("Positions", positions);
-
         return positions.map((position: any) => ({
             positionId: position._id.toString(),
             positionTitle: position.positionTitle,

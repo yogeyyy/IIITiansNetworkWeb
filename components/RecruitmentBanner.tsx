@@ -1,6 +1,6 @@
 const RecruitmentBanner = () => {
     return (
-        <section className="w-4/5 px-12 bg-creamy h-[40rem] rounded-3xl flex">
+        <section className="w-4/5 px-12 bg-creamy rounded-3xl flex">
             <div className="w-1/2 flex flex-col justify-center gap-6 pr-20">
                 <h5 className="font-bold font-inter tracking-tight text-cocoa text-lg">Recruitments</h5>
                 <h2 className="font-semibold font-inter tracking-tight text-[#110C09] text-[4rem] leading-tight">Become a part of the IIITians Network Core Team</h2>
